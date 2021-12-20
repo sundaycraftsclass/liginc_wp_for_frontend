@@ -6,6 +6,8 @@ const fs = require('fs/promises')
 const {rmSync} = require('fs')
 const path = require('path')
 
+const helpers = require('./helpers')
+
 const src_dir = 'src';
 const dist_dir = '../template';
 const data_dir = 'data'
@@ -15,6 +17,7 @@ const HBS = '.hbs';
 const YAML = '.yml'
 
 const handlebars = Handlebars.create()
+handlebars.registerHelper("times", helpers.times)
 
 async function build_template(file_path) {
   console.log(`building file ${file_path} ...`)
@@ -76,7 +79,7 @@ function on_ready() {
   return build_all
 }
 
-async function build_all () {
+async function build_all() {
   return new Promise((resolve, reject) =>
     glob(`./${src_dir}/**/*${HBS}`, undefined, async (err, files) => {
       if (err) reject(err)
